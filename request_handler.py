@@ -40,9 +40,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             try:
                 id = int(path_params[2])
             except IndexError:
-                pass  # No route parameter exists: /animals
+                pass  # No route parameter exists: /entries
             except ValueError:
-                pass  # Request had trailing slash: /animals/
+                pass  # Request had trailing slash: /entries/
 
             return (resource, id)
 
@@ -99,38 +99,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_moods()}"
 
-            # elif resource == "employees":
-            #     if id is not None:
-            #         response = f"{get_single_employee(id)}"
-            #     else:
-            #         response = f"{get_all_employees()}"
-
-            # elif resource == "locations":
-            #     if id is not None:
-            #         response = f"{get_single_location(id)}"
-            #     else:
-            #         response = f"{get_all_locations()}"
-
-        # Response from parse_url() is a tuple with 3
-        # items in it, which means the request was for
-        # `/resource?parameter=value`
-        # elif len(parsed) == 3:
-        #     (resource, key, value) = parsed
-
-        #     # Is the resource `customers` and was there a
-        #     # query parameter that specified the customer
-        #     # email as a filtering value?
-        #     if key == "email" and resource == "customers":
-        #         response = get_customers_by_email(value)
-
-        #     if key == "location_id" and resource == "animals":
-        #         response = get_animals_by_location(value)
-
-        #     if key == "location_id" and resource == "employees":
-        #         response = get_employees_by_location(value)
-
-        #     if key == "status" and resource == "animals":
-        #         response = get_animals_by_status(value)
+      
 
         self.wfile.write(response.encode())
 
@@ -161,15 +130,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         # if resource == "moods":
         #     new_entry = create_mood(post_body)
 
-        # if resource == "employees":
-        #     new_animal = create_employee(post_body)
-
-        # if resource == "customers":
-        #     new_animal = create_customer(post_body)
-
         # Encode the new animal and send in response
         self.wfile.write(f"{new_entry}".encode())
         self.wfile.write(f"{new_mood}".encode())
+        
+
        
 
     # Here's a method on the class that overrides the parent's method.
@@ -203,24 +168,18 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id) = self.parse_url(self.path)
 
-        # Delete a single animal from the list
+        # Delete a single entry from the list
         if resource == "entries":
             delete_entry(id)
             
         if resource == "moods":
             delete_mood(id)
 
-        # if resource == "customers":
-        #     delete_customer(id)
-
-        # if resource == "employees":
-        #     delete_employee(id)
-
-        # if resource == "locations":
-        #     delete_location(id)
-
-    # Encode the new animal and send in response
+    # Encode the new entry and send in response
         self.wfile.write("".encode())
+       
+
+
 
 
 # This function is not inside the class. It is the starting
