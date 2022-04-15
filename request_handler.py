@@ -1,6 +1,8 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from views.entry_requests import get_all_entries, get_single_entry, delete_entry
+from views.entry_requests import get_all_entries, get_single_entry, delete_entry, create_journal_entry, update_entry
+from views.mood_requests import get_all_moods, get_single_mood, delete_mood
+
 
 
 # Here's a class. It inherits from another class.
@@ -91,11 +93,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_entry(id)}"
                 else:
                     response = f"{get_all_entries()}"
-            # elif resource == "customers":
-            #     if id is not None:
-            #         response = f"{get_single_customer(id)}"
-            #     else:
-            #         response = f"{get_all_customers()}"
+            elif resource == "moods":
+                if id is not None:
+                    response = f"{get_single_mood(id)}"
+                else:
+                    response = f"{get_all_moods()}"
 
             # elif resource == "employees":
             #     if id is not None:
@@ -145,19 +147,19 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id) = self.parse_url(self.path)
 
-        # Initialize new animal
+        # Initialize new entry
         new_entry = None
         new_mood = None
         
 
-        # Add a new animal to the list. Don't worry about
-        # the orange squiggle, you'll define the create_animal
+        # Add a new entry to the list. Don't worry about
+        # the orange squiggle, you'll define the create_entry
         # function next.
         if resource == "entries":
-            new_entry = create_entry(post_body)
+            new_entry = create_journal_entry(post_body)
 
-        if resource == "moods":
-            new_entry = create_mood(post_body)
+        # if resource == "moods":
+        #     new_entry = create_mood(post_body)
 
         # if resource == "employees":
         #     new_animal = create_employee(post_body)
@@ -183,9 +185,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         success = False
 
-        if resource == "animals":
-            success = update_animal(id, post_body)
-    # rest of the elif's
+        if resource == "entries":
+            success = update_entry(id, post_body)
+    # # rest of the elif's
 
         if success:
             self._set_headers(204)
@@ -204,6 +206,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Delete a single animal from the list
         if resource == "entries":
             delete_entry(id)
+            
+        if resource == "moods":
+            delete_mood(id)
 
         # if resource == "customers":
         #     delete_customer(id)
